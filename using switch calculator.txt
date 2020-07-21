@@ -1,0 +1,55 @@
+var _cal1 = require('./cal');
+var express = require('express');
+var app = express();
+var port = 8700;
+var bodyparser = require('body-parser')
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({extended:true}))
+app.get('/calculator/:operation',function(req,res)
+{
+    var rs ;
+    var num1 = parseInt(req.query.num1);
+    var num2 = parseInt(req.query.num2);
+    var result;
+    switch(req.params.operation){
+    case 'add':rs = _cal1.add(num1,num2)
+    if(rs>100){
+      result = rs  + '   :result is greater than 100'
+      }
+    else{
+      result = rs  +'   : result is less than 100'
+      }
+    break;
+    case 'sub':rs = _cal1.sub(num1,num2);
+    if(rs>100){
+      result =  rs + ' : result is less than 100';
+        }
+    else{
+      result = rs + ' :  result is greater than 100';
+    }
+    break;
+    case 'mul':rs = _cal1.mul(num1,num2)
+    if(rs>0){
+      result =  rs + ' : result is less than 100';
+        }
+    else{
+      result = rs + ' :  result is greater than 100';
+    }
+    break;
+    case 'div':rs = _cal1.div(num1,num2)
+    if(rs>0){
+      result =  rs + ' : result is less than  100';
+        }
+    else{
+      result = rs + ' :  result is greater than 100';
+    }
+    break;
+    default:result='no operation found'
+    }
+    res.send(result)
+    });
+ app.listen(port,function(err)
+{
+    if(err) throw err;
+    console.log('server is running'+port)
+})
